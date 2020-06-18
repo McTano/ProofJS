@@ -88,26 +88,14 @@
       rule: "->",
       forest: [
         {
-          label: "P,~Q,Q:|-:",
+          label: "~P,~Q,P:|-:",
           rule: "Ax",
-          forest: [
-            {
-              label: "",
-              rule: "",
-              forest: [],
-            },
-          ],
+          forest: [{ label: "", rule: "", forest: [] }],
         },
         {
-          label: "~Q,P,~P:|-:",
+          label: "~Q,P,Q:|-:",
           rule: "Ax",
-          forest: [
-            {
-              label: "",
-              rule: "",
-              forest: [],
-            },
-          ],
+          forest: [{ label: "", rule: "", forest: [] }],
         },
       ],
     });
@@ -132,15 +120,31 @@
         },
       ],
     });
-
     var root3 = new DeductionRoot({
-      label: "~P,P:|-:",
-      rule: "Ax",
+      label: "P,~Q,P->Q:|-:",
+      rule: "->",
       forest: [
         {
-          label: "",
-          rule: "",
-          forest: [],
+          label: "P,~Q,~P:|-:",
+          rule: "St",
+          forest: [
+            {
+              label: "~P,~Q,P:|-:",
+              rule: "Ax",
+              forest: [{ label: "", rule: "", forest: [] }],
+            },
+          ],
+        },
+        {
+          label: "P,~Q,Q:|-:",
+          rule: "St",
+          forest: [
+            {
+              label: "~Q,P,Q:|-:",
+              rule: "Ax",
+              forest: [{ label: "", rule: "", forest: [] }],
+            },
+          ],
         },
       ],
     });

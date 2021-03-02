@@ -52,7 +52,7 @@
         sequents for the Gentzen-Prawitz tree.
       </p>
     </div>
-    <div style="margin-bottom: 10px; display: flex; flex-wrap: wrap;">
+    <div style="margin-bottom: 10px; display: flex; flex-wrap: wrap">
       <div id="sandbox1" class="sandbox">
         <div class="json-container">
           view JSON
@@ -84,30 +84,54 @@
     var jsonDisplay3 = document.getElementById("json3");
 
     var root1 = new DeductionRoot({
-      label: "P,~Q,P->Q:|-:",
+      label: "Pa,~Qb,Pa->Qb:|-:",
       rule: "->",
+      ident: 0,
       forest: [
         {
-          label: "~P,~Q,P:|-:",
-          rule: "Ax",
-          forest: [{ label: "", rule: "", forest: [] }],
+          label: "Pa,~Qb,~Pa:|-:",
+          rule: "St",
+          ident: 1,
+          forest: [
+            {
+              label: "~Qb,Pa,~Pa:|-:",
+              rule: "Ax",
+              ident: 2,
+              forest: [
+                {
+                  label: "",
+                  rule: "",
+                  ident: 15,
+                  forest: [],
+                },
+              ],
+            },
+          ],
         },
         {
-          label: "~Q,P,Q:|-:",
+          label: "Pa,~Qb,Qb:|-:",
           rule: "Ax",
-          forest: [{ label: "", rule: "", forest: [] }],
+          ident: 3,
+          forest: [
+            {
+              label: "",
+              rule: "",
+              ident: 4,
+              forest: [],
+            },
+          ],
         },
       ],
     });
 
     var root2 = new DeductionRoot({
-      label: "P/\\Q:|-:",
+      label: "Pa/\\Qa:|-:",
       rule: "&",
       ident: 11,
       forest: [
         {
-          label: "P,Q:|-:",
-          rule: "",
+          label: "Pa,Qa:|-:",
+          rule: "Lit",
           ident: 41,
           forest: [
             {
@@ -121,26 +145,26 @@
       ],
     });
     var root3 = new DeductionRoot({
-      label: "P,~Q,P->Q:|-:",
+      label: "Pc,~Qa,Pc->Qa:|-:",
       rule: "->",
       forest: [
         {
-          label: "P,~Q,~P:|-:",
+          label: "Pc,~Qa,~Pc:|-:",
           rule: "St",
           forest: [
             {
-              label: "~P,~Q,P:|-:",
+              label: "~Qa,~Pc,Pc:|-:",
               rule: "Ax",
               forest: [{ label: "", rule: "", forest: [] }],
             },
           ],
         },
         {
-          label: "P,~Q,Q:|-:",
+          label: "Pc,~Qa,Qa:|-:",
           rule: "St",
           forest: [
             {
-              label: "~Q,P,Q:|-:",
+              label: "Pc,Qa,~Qa:|-:",
               rule: "Ax",
               forest: [{ label: "", rule: "", forest: [] }],
             },
@@ -231,13 +255,13 @@
     function slowLoad() {
       setTimeout(function () {
         try {
-          Carnap.checkIchikawaJenkinsSLTableau(root1, (t) => {
+          Carnap.checkIchikawaJenkinsQLTableau(root1, (t) => {
             root1.decorate(t);
           });
-          Carnap.checkIchikawaJenkinsSLTableau(root2, (t) => {
+          Carnap.checkIchikawaJenkinsQLTableau(root2, (t) => {
             root2.decorate(t);
           });
-          Carnap.checkIchikawaJenkinsSLTableau(root3, (t) => {
+          Carnap.checkIchikawaJenkinsQLTableau(root3, (t) => {
             root3.decorate(t);
           });
         } catch (e) {
@@ -253,7 +277,7 @@
     root1.on("changed", (thenode) => {
       clearTimeout(updateTimeout);
       updateTimeout = setTimeout(function () {
-        Carnap.checkIchikawaJenkinsSLTableau(root1, (t) => {
+        Carnap.checkIchikawaJenkinsQLTableau(root1, (t) => {
           root1.decorate(t);
         });
       }, 500);
@@ -267,8 +291,9 @@
           thenode.class = "";
         }
         if (thenode.parentNode) thenode = thenode.parentNode;
-        Carnap.checkIchikawaJenkinsSLTableau(trimProof(2, thenode), (t) => {
+        Carnap.checkIchikawaJenkinsQLTableau(trimProof(2, thenode), (t) => {
           thenode.decorate(trimInfo(1, t));
+          console.log(t);
         });
       }, 500);
     });
@@ -281,7 +306,7 @@
           thenode.class = "";
         }
         if (thenode.parentNode) thenode = thenode.parentNode;
-        Carnap.checkIchikawaJenkinsSLTableau(trimProof(2, thenode), (t) => {
+        Carnap.checkIchikawaJenkinsQLTableau(trimProof(2, thenode), (t) => {
           thenode.decorate(trimInfo(1, t));
         });
       }, 500);

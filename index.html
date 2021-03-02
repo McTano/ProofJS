@@ -125,20 +125,27 @@
     });
 
     var root2 = new DeductionRoot({
-      label: "Pa/\\Qa:|-:",
-      rule: "&",
+      label: "Ax(Px&Qx):|-:",
+      rule: "A",
       ident: 11,
       forest: [
         {
-          label: "Pa,Qa:|-:",
-          rule: "Lit",
+          label: "Ax(Px&Qx),Pa&Qa:|-:",
+          rule: "&",
           ident: 41,
           forest: [
             {
-              label: "",
-              rule: "",
+              label: "Ax(Px&Qx),Pa,Qa:|-:",
+              rule: "Lit",
               ident: 43,
-              forest: [],
+              forest: [
+                {
+                  label: "",
+                  rule: "",
+                  ident: 20,
+                  forest: [],
+                },
+              ],
             },
           ],
         },
